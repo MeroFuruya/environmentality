@@ -1,68 +1,51 @@
-# Project Title
-
-<!-- PROJECT SHIELDS -->
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
-
 <div align="center">
-  <a href="https://github.com/github_username/repo_name">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+  <a href="https://github.com/MeroFuruya/node-env-helper">
+    <img src="https://raw.githubusercontent.com/MeroFuruya/environmentality/main/images/logo.png" alt="Logo" width="80" height="80">
   </a>
 
-<h3 align="center">project_title</h3>
+<h3 align="center">environmentality</h3>
 
   <p align="center">
-    project_description
+    Makes you have a good time with environment variables and dotenv
     <br />
-    <a href="https://github.com/github_username/repo_name"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/MeroFuruya/node-env-helper"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/github_username/repo_name">View Demo</a>
+    <a href="https://www.npmjs.com/package/environmentality">View on npm</a>
     ·
-    <a href="https://github.com/github_username/repo_name/issues">Report Bug</a>
+    <a href="https://github.com/MeroFuruya/node-env-helper/issues">Report Bug</a>
     ·
-    <a href="https://github.com/github_username/repo_name/issues">Request Feature</a>
+    <a href="https://github.com/MeroFuruya/node-env-helper/issues">Request Feature</a>
   </p>
 </div>
 
 <!-- TABLE OF CONTENTS -->
 ## Table of Contents
 
-- [Project Title](#project-title)
-  - [Table of Contents](#table-of-contents)
-  - [About The Project](#about-the-project)
-    - [Built With](#built-with)
-  - [Getting Started](#getting-started)
-    - [Prerequisites](#prerequisites)
-    - [Installation](#installation)
-  - [Usage](#usage)
-  - [Roadmap](#roadmap)
-  - [Contributing](#contributing)
-  - [License](#license)
-  - [Contact](#contact)
-  - [Acknowledgments](#acknowledgments)
+- [Table of Contents](#table-of-contents)
+- [About The Project](#about-the-project)
+  - [Built With](#built-with)
+- [Getting Started](#getting-started)
+  - [Installation](#installation)
+- [Usage](#usage)
+- [Roadmap](#roadmap)
+- [Contributing](#contributing)
+- [License](#license)
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+This package lets you easily manage your environment variables and dotenv files. It is designed to be as simple as possible to use and to be as flexible as possible.
 
-Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `github_username`, `repo_name`, `twitter_handle`, `linkedin_username`, `email_client`, `email`, `project_title`, `project_description`
+When an environement variable is missing, it will throw an error or use a default value.
+It also can be used to convert environment variables to other types like numbers or booleans.
+
+It may be used with [dotenv](https://www.npmjs.com/package/dotenv) and [dotenv-expand](https://www.npmjs.com/package/dotenv-expand) but can also be used without them.
 
 ### Built With
 
-- [![Next][Next.js]][Next-url]
-- [![React][React.js]][React-url]
-- [![Vue][Vue.js]][Vue-url]
-- [![Angular][Angular.io]][Angular-url]
-- [![Svelte][Svelte.dev]][Svelte-url]
-- [![Laravel][Laravel.com]][Laravel-url]
-- [![Bootstrap][Bootstrap.com]][Bootstrap-url]
-- [![JQuery][JQuery.com]][JQuery-url]
+- [![Node.js][Node.js]][Node-url]
+- [![typescript][typescript]][typescript-url]
 
 <!-- GETTING STARTED -->
 ## Getting Started
@@ -70,51 +53,50 @@ Here's a blank template to get started: To avoid retyping too much info. Do a se
 This is an example of how you may give instructions on setting up your project locally.
 To get a local copy up and running follow these simple example steps.
 
-### Prerequisites
-
-This is an example of how to list things you need to use the software and how to install them.
-
-- npm
-
-```sh
-npm install npm@latest -g
-```
-
 ### Installation
 
-- Get a free API Key at [https://example.com](https://example.com)
-- Clone the repo
-
 ```sh
-git clone https://github.com/github_username/repo_name.git
-```
-
-- Install NPM packages
-
-```sh
-npm install
-```
-
-- Enter your API in `config.js`
-
-```js
-const API_KEY = 'ENTER YOUR API';
+npm install environmentality
 ```
 
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+```env
+TEST_STRING=Hello World
+TEST_NUMBER=42
+TEST_BOOLEAN=true
+TEST_ENUM=test
+```
 
-_For more examples, please refer to the [Documentation](https://example.com)_
+```typescript
+import { Env, EnvVar } from 'environmentality'
+
+@Env()
+class Env {
+
+  @EnvVar()
+  readonly TEST_STRING?: string
+
+  @EnvVar({ type: "number" })
+  readonly TEST_NUMBER?: number
+
+  @EnvVar({ type: "boolean", name: "TEST_BOOLEAN" })
+  readonly myBool?: boolean
+
+  @EnvVar({ type: "enum", enumValues: ["test", "lmao"] })
+  readonly TEST_ENUM?: "test" | "lmao"
+
+}
+
+const env = new Env()
+
+console.log(env.TEST_STRING) // Hello World
+
+```
 
 <!-- ROADMAP -->
 ## Roadmap
-
-- [ ] Feature 1
-- [ ] Feature 2
-- [ ] Feature 3
-  - [ ] Nested Feature
 
 See the [open issues](https://github.com/github_username/repo_name/issues) for a full list of proposed features (and known issues).
 
@@ -137,48 +119,11 @@ Don't forget to give the project a star! Thanks again!
 
 Distributed under the MIT License. See [`LICENSE`](./LICENSE) for more information.
 
-<!-- CONTACT -->
-## Contact
-
-mac. brand spaces - [dev@mac.de](mailto:dev@mac.de)
-
-Project Link: [https://github.com/mac-brand-spaces/.template](https://github.com/mac-brand-spaces/.template)
-
-<!-- ACKNOWLEDGMENTS -->
-## Acknowledgments
-
-- [Marius Kehl](https://github.com/MeroFuruya)
-- [Lukas Wilbert](https://github.com/TFLuke2012)
-- [Ulrich Herrmann](https://github.com/ulrich-herrmann)
-
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/github_username/repo_name.svg?style=for-the-badge
-[contributors-url]: https://github.com/github_username/repo_name/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/github_username/repo_name.svg?style=for-the-badge
-[forks-url]: https://github.com/github_username/repo_name/network/members
-[stars-shield]: https://img.shields.io/github/stars/github_username/repo_name.svg?style=for-the-badge
-[stars-url]: https://github.com/github_username/repo_name/stargazers
-[issues-shield]: https://img.shields.io/github/issues/github_username/repo_name.svg?style=for-the-badge
-[issues-url]: https://github.com/github_username/repo_name/issues
-[license-shield]: https://img.shields.io/github/license/github_username/repo_name.svg?style=for-the-badge
-[license-url]: https://github.com/github_username/repo_name/blob/master/LICENSE.txt
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/linkedin_username
-[product-screenshot]: images/screenshot.png
-[Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
-[Next-url]: https://nextjs.org/
-[React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
-[React-url]: https://reactjs.org/
-[Vue.js]: https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D
-[Vue-url]: https://vuejs.org/
-[Angular.io]: https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white
-[Angular-url]: https://angular.io/
-[Svelte.dev]: https://img.shields.io/badge/Svelte-4A4A55?style=for-the-badge&logo=svelte&logoColor=FF3E00
-[Svelte-url]: https://svelte.dev/
-[Laravel.com]: https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white
-[Laravel-url]: https://laravel.com
-[Bootstrap.com]: https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white
-[Bootstrap-url]: https://getbootstrap.com
-[JQuery.com]: https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white
-[JQuery-url]: https://jquery.com
+
+[Node.js]: https://img.shields.io/badge/-Node.js-339933?style=flat-square&logo=Node.js&logoColor=white
+[Node-url]: https://nodejs.org/en/
+
+[typescript]: https://img.shields.io/badge/-TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white
+[typescript-url]: https://www.typescriptlang.org/
