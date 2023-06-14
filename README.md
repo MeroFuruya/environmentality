@@ -62,8 +62,36 @@ npm install environmentality
 <!-- USAGE EXAMPLES -->
 ## Usage
 
+```env
+TEST_STRING=Hello World
+TEST_NUMBER=42
+TEST_BOOLEAN=true
+TEST_ENUM=test
+```
+
 ```typescript
-import { Environmentality } from 'environmentality';
+import { Env, EnvVar } from 'environmentality'
+
+@Env()
+class Env {
+
+  @EnvVar()
+  readonly TEST_STRING?: string
+
+  @EnvVar({ type: "number" })
+  readonly TEST_NUMBER?: number
+
+  @EnvVar({ type: "boolean", name: "TEST_BOOLEAN" })
+  readonly myBool?: boolean
+
+  @EnvVar({ type: "enum", enumValues: ["test", "lmao"] })
+  readonly TEST_ENUM?: "test" | "lmao"
+
+}
+
+const env = new Env()
+
+console.log(env.TEST_STRING) // Hello World
 
 ```
 
