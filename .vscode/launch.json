@@ -1,0 +1,29 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "ts-node",
+            "type": "node",
+            "request": "launch",
+            "args": [
+                "${workspaceRoot}/src/main.ts"
+            ],
+            "runtimeArgs": [
+                "-r",
+                "ts-node/register"
+            ],
+            "cwd": "${workspaceRoot}",
+            // "protocol": "inspector",
+            "internalConsoleOptions": "openOnSessionStart",
+            "envFile": "${workspaceFolder}/.env",
+            "env": {
+                "NODE_ENV": "development",
+                "TEST_STRING": "test string",
+                "TEST_NUMBER": "1234",
+                "TEST_BOOLEAN": "true",
+                "TEST_DEFAULT": "default value",
+                "TEST_RENAMEDD": "renamed value",
+            }
+        }
+    ]
+}
