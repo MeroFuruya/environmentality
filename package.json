@@ -1,8 +1,13 @@
 {
   "name": "environmentality",
-  "version": "1.0.0",
-  "description": "",
+  "version": "2.0.0",
+  "description": "makes you have a good time with environment variables and dotenv",
   "icon": "https://raw.githubusercontent.com/MeroFuruya/node-env-helper/main/images/logo.png",
+  "repository": "https://github.com/MeroFuruya/environmentality",
+  "bugs": {
+    "url": "https://github.com/MeroFuruya/environmentality/issues"
+  },
+  "homepage": "https://github.com/MeroFuruya/environmentality#readme",
   "displayName": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -10,8 +15,7 @@
   "scripts": {
     "test": "jest",
     "build": "tsc",
-    "start": "node dist/index.js",
-    "dev": "ts-node src/index.ts",
+    "start": "ts-node src/index.ts",
     "lint": "eslint . --ext .ts",
     "postinstall": "npm run build"
   },
@@ -19,6 +23,7 @@
   "author": "Marius Kehl",
   "license": "MIT",
   "devDependencies": {
+    "@types/dotenv": "^8.2.0",
     "@types/jest": "^29.5.2",
     "@types/node": "^20.3.1",
     "@typescript-eslint/eslint-plugin": "^5.59.11",

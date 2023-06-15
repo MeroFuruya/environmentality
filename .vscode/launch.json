@@ -6,7 +6,7 @@
             "type": "node",
             "request": "launch",
             "args": [
-                "${workspaceRoot}/src/main.ts"
+                "${workspaceRoot}/src/index.ts"
             ],
             "runtimeArgs": [
                 "-r",

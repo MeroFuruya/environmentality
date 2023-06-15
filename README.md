@@ -1,5 +1,6 @@
 <div align="center">
-  <a href="https://github.com/MeroFuruya/node-env-helper">
+  <a href="https://github.com/MeroFuruya/environmentality
+">
     <img src="https://raw.githubusercontent.com/MeroFuruya/environmentality/main/images/logo.png" alt="Logo" width="80" height="80">
   </a>
 
@@ -8,14 +9,17 @@
   <p align="center">
     Makes you have a good time with environment variables and dotenv
     <br />
-    <a href="https://github.com/MeroFuruya/node-env-helper"><strong>Explore the docs »</strong></a>
+    <a href="https://www.npmjs.com/package/environmentality
+"><strong>View on npm »</strong></a>
     <br />
     <br />
-    <a href="https://www.npmjs.com/package/environmentality">View on npm</a>
+    <a href="https://github.com/MeroFuruya/environmentality">View on github</a>
     ·
-    <a href="https://github.com/MeroFuruya/node-env-helper/issues">Report Bug</a>
+    <a href="https://github.com/MeroFuruya/environmentality/issues?template=bug-report---.yml">Report Bug</a>
     ·
-    <a href="https://github.com/MeroFuruya/node-env-helper/issues">Request Feature</a>
+    <a href="https://github.com/MeroFuruya/environmentality/issues?template=feature-request---.yml">Request Feature</a>
+    ·
+    <a href="https://github.com/MeroFuruya/environmentality/issues">Issues</a>
   </p>
 </div>
 
@@ -28,6 +32,8 @@
 - [Getting Started](#getting-started)
   - [Installation](#installation)
 - [Usage](#usage)
+  - [Environment variables](#environment-variables)
+  - [Code](#code)
 - [Roadmap](#roadmap)
 - [Contributing](#contributing)
 - [License](#license)
@@ -50,9 +56,6 @@ It may be used with [dotenv](https://www.npmjs.com/package/dotenv) and [dotenv-e
 <!-- GETTING STARTED -->
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
-
 ### Installation
 
 ```sh
@@ -62,12 +65,16 @@ npm install environmentality
 <!-- USAGE EXAMPLES -->
 ## Usage
 
+### Environment variables
+
 ```env
 TEST_STRING=Hello World
 TEST_NUMBER=42
 TEST_BOOLEAN=true
 TEST_ENUM=test
 ```
+
+### Code
 
 ```typescript
 import { Env, EnvVar } from 'environmentality'
