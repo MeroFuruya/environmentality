@@ -1,5 +1,3 @@
-import { type } from "os"
-
 type EnvironmentalityErrorCallback = (err: string[]) => void
 
 type AddError = (message: string) => void
@@ -8,10 +6,12 @@ type EnvironmentalityValueBasicTypes = string | number | boolean
 type EnvironmentalityValueTypes =
   | EnvironmentalityValueBasicTypes
   | EnvironmentalityValueBasicTypes[]
+// eslint-disable-next-line @typescript-eslint/ban-types
 type EnvironmentalityPropertyTypes = String | Number | Boolean
 
 function convertValue(
   value: string,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   options: EnvironmentalityPropertyOptions<any>,
   name: string,
   add_error: AddError
@@ -186,8 +186,10 @@ interface EnvironmentalityPropertyOptions<
   array?: boolean
   enumValues?: T[]
 }
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const _env_vars: { [key: string]: EnvironmentalityPropertyOptions<any> } = {}
 const _data: { [key: string]: EnvironmentalityValueTypes } = {}
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function EnvVar(options: EnvironmentalityPropertyOptions<any> = {}) {
   return function <TClass extends object>(target: TClass, propertyKey: string) {
     // add property to _env_vars
