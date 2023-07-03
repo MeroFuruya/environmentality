@@ -16,10 +16,18 @@
     "test": "jest",
     "build": "tsc",
     "start": "ts-node src/index.ts",
-    "lint": "eslint . --ext .ts",
-    "postinstall": "npm run build"
+    "lint": "eslint . --ext .ts"
   },
-  "keywords": [],
+  "keywords": [
+    "dotenv",
+    "environment",
+    "variables",
+    "env",
+    "helper",
+    "typescript",
+    "ts",
+    "node"
+  ],
   "author": "Marius Kehl",
   "license": "MIT",
   "devDependencies": {
