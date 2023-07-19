@@ -177,7 +177,7 @@ export function Env(options: EnvironmentalityOptions = {}) {
 
 // property decorator
 interface EnvironmentalityPropertyOptions<
-  T extends EnvironmentalityPropertyTypes
+  T extends EnvironmentalityPropertyTypes,
 > {
   name?: string
   required?: boolean
