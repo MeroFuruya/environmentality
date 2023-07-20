@@ -66,6 +66,7 @@ export const defaultEnvironmentalityPropertyOptions: EnvironmentalityPropertyOpt
 
 export type EnvironmentalityOptions = {
   error_callback?: EnvironmentalityErrorCallback
+  name_matching_strategy?: "case-sensitive" | "case-insensitive"
 }
 
 export declare class EnvironmentalityClassDeclaration {
