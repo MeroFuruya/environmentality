@@ -1,15 +1,16 @@
 import { ConvertErrors } from "./errors"
 import {
-  EnvironmentalityPropertyOptions,
   EnvironmentalityPropertyOptionsList,
   EnvironmentalityPropertyTypesConstructor,
   EnvironmentalityOptions,
+  EnvironmentalityPropertyOptionsAny,
 } from "./types"
 
-type EnvironmentalityValueBasicTypes =
-  EnvironmentalityPropertyTypesConstructor<any> | null
+export type EnvironmentalityValueBasicTypes =
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  EnvironmentalityPropertyTypesConstructor<any>
 // string | number | boolean
-type EnvironmentalityValueTypes =
+export type EnvironmentalityValueTypes =
   | EnvironmentalityValueBasicTypes
   | EnvironmentalityValueBasicTypes[]
 
@@ -83,7 +84,7 @@ export class EnvConverter {
   convertValue(
     value: string,
     name: string,
-    options: EnvironmentalityPropertyOptions<any>
+    options: EnvironmentalityPropertyOptionsAny
   ): EnvironmentalityValueTypes {
     switch (options.type) {
       case undefined:
@@ -112,7 +113,7 @@ export class EnvConverter {
   convertStringValue(
     value: string,
     name: string,
-    options: any
+    options: EnvironmentalityPropertyOptionsAny
   ): string | null | (string | null)[] {
     if (options.array) {
       const array = value.split(",")
@@ -130,7 +131,7 @@ export class EnvConverter {
   convertNumberValue(
     value: string,
     name: string,
-    options: any
+    options: EnvironmentalityPropertyOptionsAny
   ): number | null | (number | null)[] {
     if (options.array) {
       let valid = true
@@ -163,7 +164,7 @@ export class EnvConverter {
   convertBooleanValue(
     value: string,
     name: string,
-    options: any
+    options: EnvironmentalityPropertyOptionsAny
   ): boolean | null | (boolean | null)[] {
     if (options.array) {
       const array = value.split(",").map((v) => {
@@ -186,7 +187,7 @@ export class EnvConverter {
   checkEnumValues(
     value: EnvironmentalityValueTypes,
     name: string,
-    options: any
+    options: EnvironmentalityPropertyOptionsAny
   ): boolean {
     if (options.enumValues === undefined) {
       return true

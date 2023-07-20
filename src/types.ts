@@ -1,3 +1,4 @@
+import { EnvironmentalityValueTypes } from "./convert"
 import { EnvironmentalityErrorCallback } from "./errors"
 
 export type EnvironmentalityPropertyTypes = "string" | "number" | "boolean"
@@ -10,7 +11,7 @@ export type EnvironmentalityPropertyTypesConstructor<
   ? number
   : T extends "boolean"
   ? boolean
-  : never
+  : null
 
 /*
  * | required | default value set | environment variable set | result                         |
@@ -47,10 +48,14 @@ export interface EnvironmentalityPropertyOptions<
   enumValues?: EnvironmentalityPropertyTypesConstructor<T>[]
 }
 
-export type EnvironmentalityPropertyOptionsList =
-  EnvironmentalityPropertyOptions<any>[]
+export type EnvironmentalityPropertyOptionsAny =
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  EnvironmentalityPropertyOptions<any>
 
-export const defaultEnvironmentalityPropertyOptions: EnvironmentalityPropertyOptions<any> =
+export type EnvironmentalityPropertyOptionsList =
+  EnvironmentalityPropertyOptionsAny[]
+
+export const defaultEnvironmentalityPropertyOptions: EnvironmentalityPropertyOptionsAny =
   {
     required: true,
     type: String,
@@ -64,17 +69,18 @@ export type EnvironmentalityOptions = {
 }
 
 export declare class EnvironmentalityClassDeclaration {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(...args: any[])
   static _environmentality_class_options: EnvironmentalityOptions | undefined
   static _environmentality_property_options: {
-    [key: string]: EnvironmentalityPropertyOptions<any>
+    [key: string]: EnvironmentalityPropertyOptionsAny
   }
-  _environmentality_data: { [key: string]: any }
+  _environmentality_data: { [key: string]: EnvironmentalityValueTypes }
 }
 
 export type EnvironmentalityClassPublic = {
   _environmentality_property_options: {
-    [key: string]: EnvironmentalityPropertyOptions<any>
+    [key: string]: EnvironmentalityPropertyOptionsAny
   }
-  _environmentality_data: { [key: string]: any }
+  _environmentality_data: { [key: string]: EnvironmentalityValueTypes }
 }

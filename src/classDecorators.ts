@@ -1,8 +1,9 @@
-import { EnvConverter } from "./convert"
+import { EnvConverter, EnvironmentalityValueTypes } from "./convert"
 import {
   defaultEnvironmentalityPropertyOptions,
   EnvironmentalityOptions,
   EnvironmentalityPropertyOptions,
+  EnvironmentalityPropertyOptionsAny,
   EnvironmentalityPropertyOptionsList,
   EnvironmentalityPropertyTypes,
 } from "./types"
@@ -37,22 +38,29 @@ export function EnvVar<T extends EnvironmentalityPropertyTypes>(
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type arbitraryClass = { new (...args: any[]): any }
+
 // type EnvironmentalityClass = ReturnType<ReturnType<typeof Env>>
 export function Env(options: EnvironmentalityOptions | undefined = undefined) {
   function _Env<T extends arbitraryClass>(target: T) {
     // create new class
     return class newClass extends target {
-      static _environmentality_data: { [key: string]: any } = {}
+      static _environmentality_data: {
+        [key: string]: EnvironmentalityValueTypes
+      } = {}
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       constructor(...args: any[]) {
         super(...args)
         // type target
         const _target = target as unknown as {
           prototype: {
             _environmentality_property_options: {
-              [key: string]: EnvironmentalityPropertyOptions<any>
+              [key: string]: EnvironmentalityPropertyOptionsAny
             }
-            _environmentality_data: { [key: string]: any } | undefined
+            _environmentality_data:
+              | { [key: string]: EnvironmentalityValueTypes }
+              | undefined
           }
         }
         // create property options and data if they don't exist

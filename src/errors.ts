@@ -22,7 +22,7 @@ export class ConvertErrors {
     this.add_error(`Missing required environment variable ${name}`)
   }
 
-  invalid_value(value: any, name: string, must_be?: string) {
+  invalid_value(value: unknown, name: string, must_be?: string) {
     if (must_be) {
       this.add_error(`Invalid value '${value}' for ${name}, must be ${must_be}`)
     } else {
@@ -30,7 +30,7 @@ export class ConvertErrors {
     }
   }
 
-  invalid_default(value: any, name: string, must_be?: string) {
+  invalid_default(value: unknown, name: string, must_be?: string) {
     if (must_be) {
       this.add_error(
         `Invalid default value '${value}' for ${name}, must be ${must_be}`
