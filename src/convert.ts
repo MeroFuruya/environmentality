@@ -31,18 +31,19 @@ export class EnvConverter {
       class_options ? class_options.error_callback : undefined
     )
     const converter = new EnvConverter(errors)
-    const converted = converter.convert(property_options)
+    const converted = converter.convert(property_options, class_options)
     if (errors.hasErrors()) {
       errors.finish()
     }
     return converted
   }
 
-  convert(property_options: EnvironmentalityPropertyOptionsList): {
+  convert(
+    property_options: EnvironmentalityPropertyOptionsList,
+    class_options?: EnvironmentalityOptions
+  ): {
     [key: string]: EnvironmentalityValueTypes
   } {
-    // get environment variables
-    const _env: { [key: string]: string | undefined } = process.env
     // create object to store converted values
     const _converted: { [key: string]: EnvironmentalityValueTypes } = {}
     // iterate over property options
@@ -54,7 +55,7 @@ export class EnvConverter {
         return
       }
       // get value from environment variables
-      const value = _env[name]
+      const value = this.getEnvValue(name, class_options)
       // check if value is defined
       if (!value) {
         // check if default value is defined
@@ -79,6 +80,33 @@ export class EnvConverter {
       }
     })
     return _converted
+  }
+
+  private getEnvValue(
+    name: string,
+    class_options?: EnvironmentalityOptions
+  ): string | undefined {
+    const _env: { [key: string]: string | undefined } = process.env
+    const name_matching_strategy =
+      class_options?.name_matching_strategy || "case-sensitive"
+    switch (name_matching_strategy) {
+      case "case-sensitive": {
+        return _env[name]
+      }
+      case "case-insensitive": {
+        // match case-insensitive
+        const keys = Object.keys(_env)
+        for (let i = 0; i < keys.length; i++) {
+          if (keys[i].toLowerCase() === name.toLowerCase()) {
+            return _env[keys[i]]
+          }
+        }
+        return undefined
+      }
+      default: {
+        return undefined
+      }
+    }
   }
 
   convertValue(
