@@ -44,8 +44,6 @@ export class EnvConverter {
   ): {
     [key: string]: EnvironmentalityValueTypes
   } {
-    // get environment variables
-    const _env: { [key: string]: string | undefined } = process.env
     // create object to store converted values
     const _converted: { [key: string]: EnvironmentalityValueTypes } = {}
     // iterate over property options
