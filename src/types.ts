@@ -27,6 +27,7 @@ export type EnvironmentalityPropertyTypesConstructor<
  */
 export interface EnvironmentalityPropertyOptions<
   T extends EnvironmentalityPropertyTypes,
+  IsArray extends boolean = true | false,
 > {
   /*
    * The name of the environment variable to use. Defaults to the property name.
@@ -39,12 +40,14 @@ export interface EnvironmentalityPropertyOptions<
   /*
    * The default value to use if the environment variable is not set. Defaults to undefined.
    */
-  default?: EnvironmentalityPropertyTypesConstructor<T>
+  default?: IsArray extends true
+    ? EnvironmentalityPropertyTypesConstructor<T>[]
+    : EnvironmentalityPropertyTypesConstructor<T>
   /*
    * The type of the environment variable. Defaults to string.
    */
   type?: T
-  array?: boolean
+  array?: IsArray
   enumValues?: EnvironmentalityPropertyTypesConstructor<T>[]
 }
 
