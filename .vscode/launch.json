@@ -24,6 +24,17 @@
                 "TEST_DEFAULT": "default value",
                 "TEST_RENAMEDD": "renamed value",
             }
+        },
+        {
+            "name": "Debug Jest Tests",
+            "type": "node",
+            "request": "launch",
+            "runtimeArgs": [
+              "--inspect-brk",
+              "${workspaceRoot}/node_modules/jest/bin/jest.js",
+              "--runInBand"
+            ],
+            "console": "integratedTerminal",
         }
     ]
 }
