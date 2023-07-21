@@ -216,7 +216,9 @@ export class EnvConverter {
       this.errors.invalid_value(value, name, "a number")
       return null
     }
-    this.checkEnumValues(number, name, options)
+    if (!this.checkEnumValues(number, name, options)) {
+      return null
+    }
     return number
   }
 
