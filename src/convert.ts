@@ -61,20 +61,24 @@ export class EnvConverter {
         // check if default value is defined
         if (!options.default) {
           // check if property is required
-          if (!options.required) {
-            // if not required, set value to null
-            _converted[name] = null
-          } else {
+          if (options.required) {
             // if required, throw error
             this.errors.missing_required(name)
           }
+          // set value to null
+          _converted[name] = null
         } else {
           // if default value is defined, set value to default value
           _converted[name] = options.default
         }
       } else {
+        // convert value
         const converted_value = this.convertValue(value, name, options)
-        if (converted_value !== null) {
+        if (!converted_value) {
+          // if value is invalid, set value to null
+          _converted[name] = null
+        } else {
+          // set value to converted value
           _converted[name] = converted_value
         }
       }
@@ -87,9 +91,8 @@ export class EnvConverter {
     class_options?: EnvironmentalityOptions
   ): string | undefined {
     const _env: { [key: string]: string | undefined } = process.env
-    const name_matching_strategy =
-      class_options?.name_matching_strategy || "case-sensitive"
-    switch (name_matching_strategy) {
+    switch (class_options?.name_matching_strategy) {
+      default:
       case "case-sensitive": {
         return _env[name]
       }
@@ -101,9 +104,6 @@ export class EnvConverter {
             return _env[keys[i]]
           }
         }
-        return undefined
-      }
-      default: {
         return undefined
       }
     }
@@ -133,7 +133,7 @@ export class EnvConverter {
       }
       default: {
         this.errors.unsupported_type(options.type, name)
-        return value
+        return null
       }
     }
   }
