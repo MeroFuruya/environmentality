@@ -1,9 +1,8 @@
-import { EnvConverter, EnvironmentalityValueTypes } from "./convert"
+import { EnvConverter } from "./convert"
 import {
   defaultEnvironmentalityPropertyOptions,
   EnvironmentalityOptions,
   EnvironmentalityPropertyOptions,
-  EnvironmentalityPropertyOptionsAny,
   EnvironmentalityPropertyOptionsList,
   EnvironmentalityPropertyTypes,
 } from "./types"
@@ -52,10 +51,7 @@ export function Env(options: EnvironmentalityOptions | undefined = undefined) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       constructor(...args: any[]) {
         super(...args)
-        // type target
-        const _a = Object.getPrototypeOf(this)
-        const _b = Object.getPrototypeOf(_a)
-
+        // get target class
         const _target = Object.getPrototypeOf(Object.getPrototypeOf(this))
         // create property options and data if they don't exist
         if (!_target._environmentality_property_options) {

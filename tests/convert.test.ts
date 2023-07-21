@@ -1,7 +1,7 @@
 import { describe, test, expect, beforeEach, jest } from "@jest/globals"
 // import { mocked } from "ts-jest/cli"
 import { EnvConverter } from "../src/convert"
-import { ConvertErrors, EnvironmentalityErrorCallback } from "../src/errors"
+import { ConvertErrors } from "../src/errors"
 
 jest.mock("../src/errors", () => {
   return {
@@ -26,6 +26,7 @@ let errors: ConvertErrors
 
 describe("decorators_read_env", () => {
   beforeEach(() => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ;(ConvertErrors as any).mockClear()
 
     process.env = {
