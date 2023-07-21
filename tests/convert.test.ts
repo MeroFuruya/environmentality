@@ -3,21 +3,28 @@ import { describe, test, expect, beforeEach, jest } from "@jest/globals"
 import { EnvConverter } from "../src/convert"
 import { ConvertErrors } from "../src/errors"
 
-const mockAddError = jest.fn()
 jest.mock("../src/errors", () => {
   return {
     ConvertErrors: jest.fn().mockImplementation(() => {
       return {
-        add_error: mockAddError,
-        hasErrors: mockAddError,
-        missing_required: mockAddError,
-        invalid_value: mockAddError,
-        invalid_default: mockAddError,
+        hasErrors: jest.fn(),
         finish: jest.fn(),
+        add_error: jest.fn(),
+        missing_required: jest.fn(),
+        invalid_value: jest.fn(),
+        invalid_default: jest.fn(),
+        unsupported_type: jest.fn(),
       }
     }),
   }
 })
+function noneHasBeenCalled() {
+  expect(errors.add_error).not.toHaveBeenCalled()
+  expect(errors.invalid_default).not.toHaveBeenCalled()
+  expect(errors.invalid_value).not.toHaveBeenCalled()
+  expect(errors.missing_required).not.toHaveBeenCalled()
+  expect(errors.unsupported_type).not.toHaveBeenCalled()
+}
 
 let envConverter: EnvConverter
 let errors: ConvertErrors
@@ -26,7 +33,6 @@ describe("decorators_read_env", () => {
   beforeEach(() => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ;(ConvertErrors as any).mockClear()
-    mockAddError.mockClear()
 
     process.env = {
       STRING: "string",
@@ -40,6 +46,7 @@ describe("decorators_read_env", () => {
       WONG_BOOLEAN: "wrong",
       WRONG_NUMBER: "wrong",
       WRONG_FLOAT: "wrong",
+      UNSUPPORTED_TYPE: "unsupported",
     }
     errors = new ConvertErrors()
     envConverter = new EnvConverter(errors)
@@ -53,7 +60,7 @@ describe("decorators_read_env", () => {
       },
     ])
     expect(result).toEqual({ STRING: "string" })
-    expect(errors.add_error).not.toHaveBeenCalled()
+    noneHasBeenCalled()
   })
 
   test("read_env_number", () => {
@@ -64,7 +71,7 @@ describe("decorators_read_env", () => {
       },
     ])
     expect(result).toEqual({ NUMBER: 1 })
-    expect(errors.add_error).not.toHaveBeenCalled()
+    noneHasBeenCalled()
   })
 
   test("read_env_float", () => {
@@ -75,7 +82,7 @@ describe("decorators_read_env", () => {
       },
     ])
     expect(result).toEqual({ FLOAT: 1.1 })
-    expect(errors.add_error).not.toHaveBeenCalled()
+    noneHasBeenCalled()
   })
 
   test("read_env_boolean", () => {
@@ -86,7 +93,7 @@ describe("decorators_read_env", () => {
       },
     ])
     expect(result).toEqual({ BOOLEAN: true })
-    expect(errors.add_error).not.toHaveBeenCalled()
+    noneHasBeenCalled()
   })
 
   test("read_env_string_array", () => {
@@ -98,7 +105,7 @@ describe("decorators_read_env", () => {
       },
     ])
     expect(result).toEqual({ STRING_ARRAY: ["string1", "string2", "string3"] })
-    expect(errors.add_error).not.toHaveBeenCalled()
+    noneHasBeenCalled()
   })
 
   test("read_env_number_array", () => {
@@ -110,7 +117,7 @@ describe("decorators_read_env", () => {
       },
     ])
     expect(result).toEqual({ NUMBER_ARRAY: [1, 2, 3] })
-    expect(errors.add_error).not.toHaveBeenCalled()
+    noneHasBeenCalled()
   })
 
   test("read_env_float_array", () => {
@@ -122,7 +129,7 @@ describe("decorators_read_env", () => {
       },
     ])
     expect(result).toEqual({ FLOAT_ARRAY: [1.1, 2.2, 3.3] })
-    expect(errors.add_error).not.toHaveBeenCalled()
+    noneHasBeenCalled()
   })
 
   test("read_env_boolean_array", () => {
@@ -134,7 +141,7 @@ describe("decorators_read_env", () => {
       },
     ])
     expect(result).toEqual({ BOOLEAN_ARRAY: [true, false, true] })
-    expect(errors.add_error).not.toHaveBeenCalled()
+    noneHasBeenCalled()
   })
 
   test("read_env_wrong_boolean", () => {
@@ -145,7 +152,7 @@ describe("decorators_read_env", () => {
       },
     ])
     expect(result).toEqual({ WONG_BOOLEAN: null })
-    expect(errors.add_error).toHaveBeenCalled()
+    expect(errors.invalid_value).toHaveBeenCalled()
   })
 
   test("read_env_wrong_number", () => {
@@ -156,7 +163,7 @@ describe("decorators_read_env", () => {
       },
     ])
     expect(result).toEqual({ WRONG_NUMBER: null })
-    expect(errors.add_error).toHaveBeenCalled()
+    expect(errors.invalid_value).toHaveBeenCalled()
   })
 
   test("read_env_wrong_float", () => {
@@ -167,7 +174,7 @@ describe("decorators_read_env", () => {
       },
     ])
     expect(result).toEqual({ WRONG_FLOAT: null })
-    expect(errors.add_error).toHaveBeenCalled()
+    expect(errors.invalid_value).toHaveBeenCalled()
   })
 
   test("read_env_missing_required", () => {
@@ -179,7 +186,7 @@ describe("decorators_read_env", () => {
       },
     ])
     expect(result).toEqual({ MISSING_REQUIRED: null })
-    expect(errors.add_error).toHaveBeenCalled()
+    expect(errors.missing_required).toHaveBeenCalledWith("MISSING_REQUIRED")
   })
 
   test("read_env_default", () => {
@@ -191,7 +198,7 @@ describe("decorators_read_env", () => {
       },
     ])
     expect(result).toEqual({ DEFAULT: "default" })
-    expect(errors.add_error).not.toHaveBeenCalled()
+    noneHasBeenCalled()
   })
 
   test("read_env_default_array", () => {
@@ -206,6 +213,44 @@ describe("decorators_read_env", () => {
     expect(result).toEqual({
       DEFAULT_ARRAY: ["default1", "default2", "default3"],
     })
-    expect(errors.add_error).not.toHaveBeenCalled()
+    noneHasBeenCalled()
+  })
+
+  test("read_env_unsupported_type", () => {
+    const result = envConverter.convert([
+      {
+        name: "UNSUPPORTED_TYPE",
+        type: "unsupported",
+      },
+    ])
+    expect(result).toEqual({ UNSUPPORTED_TYPE: null })
+    expect(errors.unsupported_type).toHaveBeenCalledWith(
+      "unsupported",
+      "UNSUPPORTED_TYPE"
+    )
+  })
+
+  test("read_env_string_enum", () => {
+    const result = envConverter.convert([
+      {
+        name: "STRING",
+        type: "string",
+        enumValues: ["string", "string1", "string2"],
+      },
+    ])
+    expect(result).toEqual({ STRING: "string" })
+    noneHasBeenCalled()
+  })
+
+  test("read_env_string_enum_wrong", () => {
+    const result = envConverter.convert([
+      {
+        name: "STRING",
+        type: "string",
+        enumValues: ["string1", "string2"],
+      },
+    ])
+    expect(result).toEqual({ STRING: null })
+    expect(errors.invalid_value).toHaveBeenCalled()
   })
 })
