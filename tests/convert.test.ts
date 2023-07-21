@@ -268,4 +268,130 @@ describe("decorators_read_env", () => {
     expect(result).toEqual({ STRING: null })
     expect(errors.invalid_value).toHaveBeenCalled()
   })
+
+  test("read_env_number_enum", () => {
+    const result = envConverter.convert([
+      {
+        name: "NUMBER",
+        type: "number",
+        enumValues: [1, 2, 3],
+      },
+    ])
+    expect(result).toEqual({ NUMBER: 1 })
+    noErrorHasBeenCalled()
+  })
+
+  test("read_env_number_enum_wrong", () => {
+    const result = envConverter.convert([
+      {
+        name: "NUMBER",
+        type: "number",
+        enumValues: [2, 3],
+      },
+    ])
+    expect(result).toEqual({ NUMBER: null })
+    expect(errors.invalid_value).toHaveBeenCalled()
+  })
+
+  test("read_env_float_enum", () => {
+    const result = envConverter.convert([
+      {
+        name: "FLOAT",
+        type: "number",
+        enumValues: [1.1, 2.2, 3.3],
+      },
+    ])
+    expect(result).toEqual({ FLOAT: 1.1 })
+    noErrorHasBeenCalled()
+  })
+
+  test("read_env_float_enum_wrong", () => {
+    const result = envConverter.convert([
+      {
+        name: "FLOAT",
+        type: "number",
+        enumValues: [2.2, 3.3],
+      },
+    ])
+    expect(result).toEqual({ FLOAT: null })
+    expect(errors.invalid_value).toHaveBeenCalled()
+  })
+
+  test("read_env_string_array_enum", () => {
+    const result = envConverter.convert([
+      {
+        name: "STRING_ARRAY",
+        type: "string",
+        array: true,
+        enumValues: ["string1", "string2", "string3", "string4"],
+      },
+    ])
+    expect(result).toEqual({ STRING_ARRAY: ["string1", "string2", "string3"] })
+    noErrorHasBeenCalled()
+  })
+
+  test("read_env_string_array_enum_wrong", () => {
+    const result = envConverter.convert([
+      {
+        name: "STRING_ARRAY",
+        type: "string",
+        array: true,
+        enumValues: ["string2", "string3", "string4"],
+      },
+    ])
+    expect(result).toEqual({ STRING_ARRAY: null })
+    expect(errors.invalid_value).toHaveBeenCalled()
+  })
+
+  test("read_env_number_array_enum", () => {
+    const result = envConverter.convert([
+      {
+        name: "NUMBER_ARRAY",
+        type: "number",
+        array: true,
+        enumValues: [1, 2, 3, 4],
+      },
+    ])
+    expect(result).toEqual({ NUMBER_ARRAY: [1, 2, 3] })
+    noErrorHasBeenCalled()
+  })
+
+  test("read_env_number_array_enum_wrong", () => {
+    const result = envConverter.convert([
+      {
+        name: "NUMBER_ARRAY",
+        type: "number",
+        array: true,
+        enumValues: [2, 3, 4],
+      },
+    ])
+    expect(result).toEqual({ NUMBER_ARRAY: null })
+    expect(errors.invalid_value).toHaveBeenCalled()
+  })
+
+  test("read_env_float_array_enum", () => {
+    const result = envConverter.convert([
+      {
+        name: "FLOAT_ARRAY",
+        type: "number",
+        array: true,
+        enumValues: [1.1, 2.2, 3.3, 4.4],
+      },
+    ])
+    expect(result).toEqual({ FLOAT_ARRAY: [1.1, 2.2, 3.3] })
+    noErrorHasBeenCalled()
+  })
+
+  test("read_env_float_array_enum_wrong", () => {
+    const result = envConverter.convert([
+      {
+        name: "FLOAT_ARRAY",
+        type: "number",
+        array: true,
+        enumValues: [2.2, 3.3, 4.4],
+      },
+    ])
+    expect(result).toEqual({ FLOAT_ARRAY: null })
+    expect(errors.invalid_value).toHaveBeenCalled()
+  })
 })
