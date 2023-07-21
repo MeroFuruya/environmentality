@@ -109,6 +109,37 @@ export class EnvConverter {
     }
   }
 
+  private parseStringArray(value: string): string[] {
+    let skip = 0
+    let current = ""
+    const array: string[] = []
+    for (let i = 0; i < value.length; i++) {
+      if (skip > 0) {
+        skip -= 1
+        continue
+      }
+      const c = value[i]
+      switch (c) {
+        case "\\": {
+          current += value[i + 1]
+          skip += 1
+          break
+        }
+        case ",": {
+          array.push(current)
+          current = ""
+          break
+        }
+        default: {
+          current += c
+        }
+      }
+    }
+    // push last value
+    array.push(current)
+    return array
+  }
+
   convertValue(
     value: string,
     name: string,
@@ -144,7 +175,7 @@ export class EnvConverter {
     options: EnvironmentalityPropertyOptionsAny
   ): string | null | (string | null)[] {
     if (options.array) {
-      const array = value.split(",")
+      const array = this.parseStringArray(value)
       if (!this.checkEnumValues(array, name, options)) {
         return null
       }
@@ -163,7 +194,7 @@ export class EnvConverter {
   ): number | null | (number | null)[] {
     if (options.array) {
       let valid = true
-      const array = value.split(",").map((v) => {
+      const array = this.parseStringArray(value).map((v) => {
         const number = Number(v)
         if (isNaN(number)) {
           this.errors.invalid_value(v, name, "a number")
@@ -195,7 +226,7 @@ export class EnvConverter {
     options: EnvironmentalityPropertyOptionsAny
   ): boolean | null | (boolean | null)[] {
     if (options.array) {
-      const array = value.split(",").map((v) => {
+      const array = this.parseStringArray(value).map((v) => {
         if (!["true", "false"].includes(v.toLowerCase())) {
           this.errors.invalid_value(v, name, "'true' or 'false'")
           return null

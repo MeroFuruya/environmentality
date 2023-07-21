@@ -18,7 +18,7 @@ jest.mock("../src/errors", () => {
     }),
   }
 })
-function noneHasBeenCalled() {
+function noErrorHasBeenCalled() {
   expect(errors.add_error).not.toHaveBeenCalled()
   expect(errors.invalid_default).not.toHaveBeenCalled()
   expect(errors.invalid_value).not.toHaveBeenCalled()
@@ -40,6 +40,7 @@ describe("decorators_read_env", () => {
       FLOAT: "1.1",
       BOOLEAN: "true",
       STRING_ARRAY: "string1,string2,string3",
+      STRING_ARRAY_WITH_ESCAPED_COMMA: "string1\\,string2,string3",
       NUMBER_ARRAY: "1,2,3",
       FLOAT_ARRAY: "1.1,2.2,3.3",
       BOOLEAN_ARRAY: "true,false,true",
@@ -60,7 +61,7 @@ describe("decorators_read_env", () => {
       },
     ])
     expect(result).toEqual({ STRING: "string" })
-    noneHasBeenCalled()
+    noErrorHasBeenCalled()
   })
 
   test("read_env_number", () => {
@@ -71,7 +72,7 @@ describe("decorators_read_env", () => {
       },
     ])
     expect(result).toEqual({ NUMBER: 1 })
-    noneHasBeenCalled()
+    noErrorHasBeenCalled()
   })
 
   test("read_env_float", () => {
@@ -82,7 +83,7 @@ describe("decorators_read_env", () => {
       },
     ])
     expect(result).toEqual({ FLOAT: 1.1 })
-    noneHasBeenCalled()
+    noErrorHasBeenCalled()
   })
 
   test("read_env_boolean", () => {
@@ -93,7 +94,7 @@ describe("decorators_read_env", () => {
       },
     ])
     expect(result).toEqual({ BOOLEAN: true })
-    noneHasBeenCalled()
+    noErrorHasBeenCalled()
   })
 
   test("read_env_string_array", () => {
@@ -105,7 +106,21 @@ describe("decorators_read_env", () => {
       },
     ])
     expect(result).toEqual({ STRING_ARRAY: ["string1", "string2", "string3"] })
-    noneHasBeenCalled()
+    noErrorHasBeenCalled()
+  })
+
+  test("read_env_string_array_with_escaped_comma", () => {
+    const result = envConverter.convert([
+      {
+        name: "STRING_ARRAY_WITH_ESCAPED_COMMA",
+        type: "string",
+        array: true,
+      },
+    ])
+    expect(result).toEqual({
+      STRING_ARRAY_WITH_ESCAPED_COMMA: ["string1,string2", "string3"],
+    })
+    noErrorHasBeenCalled()
   })
 
   test("read_env_number_array", () => {
@@ -117,7 +132,7 @@ describe("decorators_read_env", () => {
       },
     ])
     expect(result).toEqual({ NUMBER_ARRAY: [1, 2, 3] })
-    noneHasBeenCalled()
+    noErrorHasBeenCalled()
   })
 
   test("read_env_float_array", () => {
@@ -129,7 +144,7 @@ describe("decorators_read_env", () => {
       },
     ])
     expect(result).toEqual({ FLOAT_ARRAY: [1.1, 2.2, 3.3] })
-    noneHasBeenCalled()
+    noErrorHasBeenCalled()
   })
 
   test("read_env_boolean_array", () => {
@@ -141,7 +156,7 @@ describe("decorators_read_env", () => {
       },
     ])
     expect(result).toEqual({ BOOLEAN_ARRAY: [true, false, true] })
-    noneHasBeenCalled()
+    noErrorHasBeenCalled()
   })
 
   test("read_env_wrong_boolean", () => {
@@ -198,7 +213,7 @@ describe("decorators_read_env", () => {
       },
     ])
     expect(result).toEqual({ DEFAULT: "default" })
-    noneHasBeenCalled()
+    noErrorHasBeenCalled()
   })
 
   test("read_env_default_array", () => {
@@ -213,7 +228,7 @@ describe("decorators_read_env", () => {
     expect(result).toEqual({
       DEFAULT_ARRAY: ["default1", "default2", "default3"],
     })
-    noneHasBeenCalled()
+    noErrorHasBeenCalled()
   })
 
   test("read_env_unsupported_type", () => {
@@ -239,7 +254,7 @@ describe("decorators_read_env", () => {
       },
     ])
     expect(result).toEqual({ STRING: "string" })
-    noneHasBeenCalled()
+    noErrorHasBeenCalled()
   })
 
   test("read_env_string_enum_wrong", () => {
