@@ -3,18 +3,16 @@ import { describe, test, expect, beforeEach, jest } from "@jest/globals"
 import { EnvConverter } from "../src/convert"
 import { ConvertErrors } from "../src/errors"
 
+const mockAddError = jest.fn()
 jest.mock("../src/errors", () => {
   return {
     ConvertErrors: jest.fn().mockImplementation(() => {
       return {
-        add_error: jest.fn(),
-        unsupported_type: jest.fn(),
-        missing_required: jest.fn(),
-        invalid_value: jest.fn(),
-        invalid_default: jest.fn(),
-        getErrors: jest.fn(),
-        hasErrors: jest.fn(),
-        getErrorString: jest.fn(),
+        add_error: mockAddError,
+        hasErrors: mockAddError,
+        missing_required: mockAddError,
+        invalid_value: mockAddError,
+        invalid_default: mockAddError,
         finish: jest.fn(),
       }
     }),
@@ -28,6 +26,7 @@ describe("decorators_read_env", () => {
   beforeEach(() => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ;(ConvertErrors as any).mockClear()
+    mockAddError.mockClear()
 
     process.env = {
       STRING: "string",
@@ -146,7 +145,7 @@ describe("decorators_read_env", () => {
       },
     ])
     expect(result).toEqual({ WONG_BOOLEAN: null })
-    // expect(errors.add_error).toHaveBeenCalled()  // TODO: fix this
+    expect(errors.add_error).toHaveBeenCalled()
   })
 
   test("read_env_wrong_number", () => {
@@ -157,7 +156,7 @@ describe("decorators_read_env", () => {
       },
     ])
     expect(result).toEqual({ WRONG_NUMBER: null })
-    // expect(errors.add_error).toHaveBeenCalled()  // TODO: fix this
+    expect(errors.add_error).toHaveBeenCalled()
   })
 
   test("read_env_wrong_float", () => {
@@ -168,7 +167,7 @@ describe("decorators_read_env", () => {
       },
     ])
     expect(result).toEqual({ WRONG_FLOAT: null })
-    // expect(errors.add_error).toHaveBeenCalled() // TODO: fix this
+    expect(errors.add_error).toHaveBeenCalled()
   })
 
   test("read_env_missing_required", () => {
@@ -180,7 +179,7 @@ describe("decorators_read_env", () => {
       },
     ])
     expect(result).toEqual({ MISSING_REQUIRED: null })
-    // expect(errors.add_error).toHaveBeenCalled()  // TODO: fix this
+    expect(errors.add_error).toHaveBeenCalled()
   })
 
   test("read_env_default", () => {
