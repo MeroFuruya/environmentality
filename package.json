@@ -1,6 +1,6 @@
 {
   "name": "environmentality",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "makes you have a good time with environment variables and dotenv",
   "icon": "https://raw.githubusercontent.com/MeroFuruya/node-env-helper/main/images/logo.png",
   "repository": "https://github.com/MeroFuruya/environmentality",
